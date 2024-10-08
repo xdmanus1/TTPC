@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- DISCLAIMER: This code is created by Karsa Hunor Ákos for a Project Named TOP T Physics Constitution. -->
+  <!-- Please do not copy or use it for any other purpose without proper attribution. -->
+  <!-- If you have any questions or need further assistance, feel free to contact me at karsahunor@gmail.com. -->
+  <head>
+    <link rel="icon" type="image/x-icon" href="images/logos.png" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Top T Physics Constitution Web page with built in Converter."
+    />
+    <title>TTPC Projekt Munka</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+    <script type="text/babel">
+      const { useState } = React;
+
+      function App() {
+        const [page, setPage] = useState("home");
+        const [theme, setTheme] = useState("dark");
+        const [dropdownOpen, setDropdownOpen] = useState(false);
+        const [language, setLanguage] = useState("en");
+
+        const toggleTheme = () => {
+          const newTheme = theme === "dark" ? "light" : "dark";
+          setTheme(newTheme);
+          document.documentElement.setAttribute("data-theme", newTheme);
+        };
+
+        const pages = {
+          home: (
+            <Home
+              setPage={setPage}
+              strings={language === "en" ? enStrings : huStrings}
+            />
+          ),
+          converter: (
+            <Converter
+              setPage={setPage}
+              strings={language === "en" ? enStrings : huStrings}
+            />
+          ),
+          about: (
+            <About
+              setPage={setPage}
+              strings={language === "en" ? enStrings : huStrings}
+            />
+          ),
+        };
+
+        const toggleDropdown = () => {
+          setDropdownOpen(!dropdownOpen);
+        };
+        const changeLanguage = (newLanguage) => {
+          setLanguage(newLanguage);
+        };
+
+        return (
+          <div className={`theme-${theme}`}>
+            <nav>
+              <div className="nav-buttons">
+                <button
+                  className="nav-buttons2"
+                  onClick={() => setPage("home")}
+                >
+                  {language === "en" ? "Home" : "Kezdőlap"}
+                </button>
+                <button
+                  className="nav-buttons2"
+                  onClick={() => setPage("converter")}
+                >
+                  {language === "en" ? "Converter" : "Átváltó"}
+                </button>
+                <button
+                  className="nav-buttons2"
+                  onClick={() => setPage("about")}
+                >
+                  {language === "en" ? "About" : "Rólunk"}
+                </button>
+              </div>
+              <div className={`nav-dropdown ${dropdownOpen ? "open" : ""}`}>
+                <div className="logo-dropdown" onClick={toggleDropdown}>
+                  <div className={`bar ${dropdownOpen ? "bar1" : ""}`} />
+                  <div className={`bar ${dropdownOpen ? "bar2" : ""}`} />
+                  <div className={`bar ${dropdownOpen ? "bar3" : ""}`} />
+                </div>
+                <ul className={`dropdown-menu ${dropdownOpen ? "show" : ""}`}>
+                  <li
+                    className="dropdown-option"
+                    onClick={() => setPage("home")}
+                  >
+                    {language === "en" ? "Home" : "Kezdőlap"}
+                  </li>
+                  <li
+                    className="dropdown-option"
+                    onClick={() => setPage("converter")}
+                  >
+                    {language === "en" ? "Converter" : "Átváltó"}
+                  </li>
+                  <li
+                    className="dropdown-option"
+                    onClick={() => setPage("about")}
+                  >
+                    {language === "en" ? "About" : "Rólunk"}
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            <button
+              id="al"
+              aria-label="Theme Changer."
+              className="theme-changer"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-sun-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="bi bi-moon-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+                </svg>
+              )}
+            </button>
+            <button
+              id="language-button"
+              aria-label="Language Changer"
+              className="language-changer"
+              onClick={() => {
+                changeLanguage(language === "hu" ? "en" : "hu");
+              }}
+            >
+              {language === "en" ? "Hungarian" : "English"}
+            </button>
+            <div
+              className={`container ${page === "home" ? "visible" : "hidden"}`}
+            >
+              {pages.home}
+            </div>
+            <div
+              className={`container ${
+                page === "converter" ? "visible" : "hidden"
+              }`}
+            >
+              {pages.converter}
+            </div>
+            <div
+              className={`container ${page === "about" ? "visible" : "hidden"}`}
+            >
+              {pages.about}
+            </div>
+          </div>
+        );
+      }
+      const enStrings = {
+        homeTitle: "The Measurement of Mass and Its Historical Contexts:",
+        converterTitle: "Mass Converter",
+        converterPlaceholder: "Enter Mass",
+        converterConvertButton: "Convert",
+        converterResult: "Result",
+        aboutTitle: "About",
+        aboutDeveloper: "Developer",
+        aboutContact: "Contact",
+        aboutboxt1: "Karsa Hunor Ákos",
+        webdev: "Web Devoloper",
+        webdev2: "Web Designer",
+        webdev3: "Web Server Controller",
+        aboutboxt2: "Gocsál Mátyás",
+        matyas2: "Historical Aspects",
+        matyas3: "Media Content Editor",
+        matyas: "Communicator/Project Manager",
+        aboutboxt3: "Kovács Gáspár",
+        gaspar: "Measuring Instrument",
+        gaspar2: "Measurement Logger",
+        gaspar3: "Measurement Data Recorder",
+        aboutRights: "© All rights reserved. ",
+        A: "Prehistory:",
+        A1: "Early Humans: Considering mass for survival and hunting activities. (Bigger prey means more meat - Smaller individuals run faster).",
+        A2: "Stone Age Measurement Tools: Using stones and shells for weight measurement. (The mass of meat is equivalent to 5 stones).",
+        B: "Ancient Civilizations:",
+        B1: "Egypt: Mass measurements during pyramid construction. (Is it as heavy as the other object?)",
+        B2: "Roman Empire: Weighing goods and taxes. (If it's as heavy as this, then that's the amount to be taxed/paid).",
+        C: "Middle Ages:",
+        C1: "Medieval Markets: Mass measurement in trade. (If it's this heavy, then you pay this much).",
+        C2: "Advancements in Weighing Tools. (For example, scales and balance beams).",
+        D: "Renaissance and Scientific Progress:",
+        D1: "Galileo Galilei: Scientific investigation of weight and mass. (Introduction of measurement units).",
+        D2: "Alchemy: Examination of the composition of material weights.",
+        E: "Industrial Revolution:",
+        E1: "Steam engines and mass production: Development of mass measurement and assembly lines.",
+        E2: "Increased precision in weighing tools: Advancements in scale technology.",
+        F: "Modern History:",
+        F1: "Early 20th century: Influence of quantum physics and the theory of relativity on the concept of mass.",
+        F2: "Development of electronics: Emergence of electronic weighing instruments.",
+        cim: "Measuring Instruments",
+        As: "Approximate Measurements",
+        As1: "Pebbles, shells",
+        As2: "Counting bulk goods",
+        Bs: "Mechanical Measuring Instruments",
+        Bs1: "Scales (Lever and spring scales)",
+        Bs2: "Balance beams",
+        Cs: "Electric Scales",
+        Cs1: "Digital scale",
+        Cs2: "Load cells",
+        Ds: "Modern Measuring Instruments",
+        Ds1: "Electronic measuring instruments",
+        Ds2: "Precision balances (e.g., analytical balances)",
+        contact: " Contact: projectmail@programmer.net",
+        videotext: "Here is an example mass meter that we made:",
+        cim2: "Weight 1.",
+        cim3: "Weight 2.",
+        data1: "24 small screws",
+        data2: "1 large screwdriver head",
+        data3: "6 small screws",
+        data4: "1 large screw",
+        data5: "3 small screws + 1 piece of 100 HUF",
+        data6: "1 large screw + 1 piece of suction straw + 1 rubber cap",
+      };
+
+      const huStrings = {
+        homeTitle: "A Tömeg mérés és történelmi vonatkoztatásai:",
+        converterTitle: "Tömeg Átváltó",
+        converterPlaceholder: "Adja meg a súlyt",
+        converterConvertButton: "Átváltás",
+        converterResult: "Eredmény",
+        aboutTitle: "Rólunk",
+        aboutboxt1: "Karsa Hunor Ákos",
+        webdev: "Web Fejlesztő",
+        webdev2: "Web Tervező",
+        webdev3: "Web Szerver Kezelő",
+        aboutboxt2: "Gocsál Mátyás",
+        matyas2: "Történelmi Szempontok",
+        matyas3: "Média Tartalom Szerkesztő",
+        matyas: "Kommunikátor/Projekt Manager",
+        aboutboxt3: "Kovács Gáspár",
+        gaspar: "Mérőeszköz Készítő",
+        gaspar2: "Mérésnapló",
+        gaspar3: "Mérési adatfeljegyző",
+        aboutDeveloper: "Fejlesztő",
+        aboutContact: "Kapcsolat",
+        aboutRights: "© Minden jog fenntartva.",
+        A: "Őskor:",
+        A1: "Ősemberek: Tömeg figyelembevétele a túlélési és vadászati tevékenységekhez. (Minél nagyobb az elejtett vad, annál több a hús - Minél kisebb egy ember, annál gyorsabban fut).",
+        A2: "Kőkori mérőeszközök: Például kavicsok, kagylók használata súlyméréshez. (A hús tömege 5 kavics)",
+        B: "Ókori civilizációk:",
+        B1: "Egyiptom: Tömegmérések piramisépítés során. (Ez a olyan nehéz-e, mint ez a másik valami)",
+        B2: "Római birodalom: Súlymérések az árúk és adókhoz. (Ha olyan nehéz ez, mint az, akkor ennyit kell adózni/fizetni)",
+        C: "Középkor:",
+        C1: "Középkori vásárok: Tömegmérés a kereskedelemben. (Ha ez ennyire nehéz, akkor ennyit fizetsz érte)",
+        C2: "Súlymérő eszközök fejlődése. (Például mérleg és hidalmas mérőpálca)",
+        D: "Reneszánsz és a tudomány fejlődése:",
+        D1: "Galileo Galilei: A súly és tömeg fogalmának tudományos vizsgálata. (Mértékegységek megjelenése)",
+        D2: "Alkímia: Az anyagok tömegének összetételének vizsgálata",
+        E: "Ipari forradalom:",
+        E1: "Gőzgépek és gépgyártás: A tömegmérés és az összeszerelési vonalak kialakítása.",
+        E2: "Súlymérő eszközök precíziójának növekedése: Mérlegtechnológia fejlődése.",
+        F: "Modern kori történelem:",
+        F1: "20. század elején: A kvantumfizika és a relativitás elméletének hatása a tömeg fogalmára.",
+        F2: "Elektronika fejlődése: Elektromos tömegmérő eszközök megjelenése.",
+        cim: "Mérőeszközök",
+        As: "Hozzávető mérések",
+        As1: "Kavicsok, kagylók",
+        As2: "Kötegelt áruk darabszáma",
+        Bs: "Mechanikus mérőeszközök",
+        Bs1: "Mérlegek (Karos és rugós mérlegek)",
+        Bs2: "Hidalmas mérőpálca",
+        Cs: "Elektromos súlymérők",
+        Cs1: "Villámérleg",
+        Cs2: "Terhelésérzékelők",
+        Ds: "Modern mérőeszközök",
+        Ds1: "Elektronikus mérőeszközök",
+        Ds2: "Precíziós tömegmérők (pl. műszeres analitikai mérlegek)",
+        contact: " Elérhetőség: projectmail@programmer.net",
+        videotext: "Itt van egy példa mérleg, amit készítettünk:",
+        cim2: "Súly 1.",
+        cim3: "Súly 2.",
+        data1: "24db kis csavar",
+        data2: "1 db nagy mértű csavarozófej",
+        data3: "6 db kis csavar",
+        data4: "1 db nagy csavar",
+        data5: "3 db kis csavar + 1 db 100 Ft-s",
+        data6: "1 db nagy csavar + 1 db szívószál darab + 1 db gumi kupak",
+      };
+
+      function Home({ setPage, strings }) {
+        return (
+          <div className="home">
+            <h1 className="title">{strings.homeTitle}</h1>
+            <p className="content">
+              <li>
+                <b>{strings.A}</b>
+                <ul>
+                  <li>{strings.A1}</li>
+                  <li>{strings.A2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.B}</b>
+                <ul>
+                  <li>{strings.B1}</li>
+                  <li>{strings.B2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.C}</b>
+                <ul>
+                  <li>{strings.C1}</li>
+                  <li>{strings.C2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.D}</b>
+                <ul>
+                  <li>{strings.D1}</li>
+                  <li>{strings.D2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.E}</b>
+                <ul>
+                  <li>{strings.E1}</li>
+                  <li>{strings.E2}</li>
+                </ul>
+              </li>
+              <li>
+                {strings.F}
+                <ul>
+                  <li>{strings.F1}</li>
+                  <li>{strings.F2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.As}</b>
+                <ul>
+                  <li>{strings.As1}</li>
+                  <li>{strings.As2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.Bs}</b>
+                <ul>
+                  <li>{strings.Bs1}</li>
+                  <li>{strings.Bs2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.Cs}</b>
+                <ul>
+                  <li>{strings.Cs1}</li>
+                  <li>{strings.Cs2}</li>
+                </ul>
+              </li>
+              <li>
+                <b>{strings.Ds}</b>
+                <ul>
+                  <li>{strings.Ds1}</li>
+                  <li>{strings.Ds2}</li>
+                </ul>
+              </li>
+              <b>
+                <p className="videot">{strings.videotext}</p>
+              </b>
+              <img className="image1" src="images/defak.jpg" alt=""></img>
+              <img className="image1" src="images/1nagy.jpg" alt=""></img>
+              <img className="image1" src="images/100ft.jpg" alt=""></img>
+              <img className="image1" src="images/6dbkcs.jpg" alt=""></img>
+              <img className="image1" src="images/mukodes.jpg" alt=""></img>
+              <img className="image1" src="images/mukdes2.jpg" alt=""></img>
+              <table>
+                <tr>
+                  <th>{strings.cim2}</th>
+                  <th></th>
+                  <th>{strings.cim3}</th>
+                </tr>
+                <tr>
+                  <td>{strings.data1}</td>
+                  <td>=</td>
+                  <td>{strings.data2}</td>
+                </tr>
+                <tr>
+                  <td>{strings.data3}</td>
+                  <td>=</td>
+                  <td>{strings.data4}</td>
+                </tr>
+                <tr>
+                  <td>{strings.data5}</td>
+                  <td>=</td>
+                  <td>{strings.data6}</td>
+                </tr>
+              </table>
+            </p>
+            <p className="content">{strings.homeDescription}</p>
+          </div>
+        );
+      }
+      function Converter({ setPage, strings }) {
+        const [value, setValue] = useState("");
+        const [result, setResult] = useState("");
+        const [fromUnit, setFromUnit] = useState("kg");
+        const [toUnit, setToUnit] = useState("lb");
+
+        const units = {
+          kg: "Kilograms/Kilogramm (kg)",
+          lb: "Pounds/Font (lb)",
+          g: "Grams/Gramm (g)",
+          oz: "Ounces/Uncia (oz)",
+          mt: "Met. ton/Met. tonna (tonne)",
+          lt: "Imp. ton/Brit tonna (long ton)",
+          topT: "Top T (61 kg)",
+        };
+
+        const convertMass = () => {
+          const inputMass = parseFloat(value);
+          if (!isNaN(inputMass)) {
+            let convertedMass;
+            switch (`${fromUnit}-${toUnit}`) {
+              case "kg-lb":
+                convertedMass = inputMass * 2.20462;
+                break;
+              case "lb-kg":
+                convertedMass = inputMass / 2.20462;
+                break;
+              case "g-oz":
+                convertedMass = inputMass * 0.035274;
+                break;
+              case "oz-g":
+                convertedMass = inputMass / 0.035274;
+                break;
+              case "g-kg":
+                convertedMass = inputMass / 1000;
+                break;
+              case "kg-g":
+                convertedMass = inputMass * 1000;
+                break;
+              case "oz-lb":
+                convertedMass = inputMass / 16;
+                break;
+              case "lb-oz":
+                convertedMass = inputMass * 16;
+                break;
+              case "mt-kg":
+                convertedMass = inputMass * 1000;
+                break;
+              case "kg-mt":
+                convertedMass = inputMass / 1000;
+                break;
+              case "mt-oz":
+                convertedMass = inputMass * 35274.96;
+                break;
+              case "oz-mt":
+                convertedMass = inputMass / 35274.96;
+                break;
+              case "mt-lt":
+                convertedMass = inputMass * 0.984207;
+                break;
+              case "lt-mt":
+                convertedMass = inputMass / 0.984207;
+                break;
+              case "topT-kg":
+                convertedMass = inputMass * 61;
+                break;
+              case "kg-topT":
+                convertedMass = inputMass / 61;
+                break;
+              case "topT-lb":
+                convertedMass = inputMass * (61 * 2.20462);
+                break;
+              case "lb-topT":
+                convertedMass = inputMass / (61 * 2.20462);
+                break;
+              case "topT-mt":
+                convertedMass = inputMass / (61 / 1000);
+                break;
+              case "mt-topT":
+                convertedMass = inputMass * (61 / 1000);
+                break;
+              case "topT-lt":
+                convertedMass = inputMass / (61 * 0.984207);
+                break;
+              case "lt-topT":
+                convertedMass = inputMass * (61 * 0.984207);
+                break;
+              case "kg-oz":
+                convertedMass = inputMass * 35.274;
+                break;
+              case "g-oz":
+                convertedMass = inputMass * 0.035274;
+                break;
+              case "lt-oz":
+                convertedMass = inputMass * 35840;
+                break;
+              case "mt-oz":
+                convertedMass = inputMass * 35274.96;
+                break;
+              case "topT-oz":
+                convertedMass = inputMass * 35.274;
+                break;
+              case "kg-lt":
+                convertedMass = inputMass * 0.00110231;
+                break;
+              case "g-lt":
+                convertedMass = inputMass * 1.1023e-6;
+                break;
+              case "oz-lt":
+                convertedMass = inputMass * 0.0000283495;
+                break;
+              case "mt-lt":
+                convertedMass = inputMass * 0.984207;
+                break;
+              case "topT-lt":
+                convertedMass = inputMass * 0.984207;
+                break;
+              case "g-mt":
+                convertedMass = inputMass * 0.001;
+                break;
+              case "lt-mt":
+                convertedMass = inputMass * 1.01605;
+                break;
+              case "oz-mt":
+                convertedMass = inputMass * 0.0000283495;
+                break;
+              case "topT-mt":
+                convertedMass = inputMass * 0.016;
+                break;
+              case "g-lt":
+                convertedMass = inputMass * 907184.74;
+                break;
+              case "oz-lt":
+                convertedMass = inputMass * 32000;
+                break;
+              case "topT-lt":
+                convertedMass = inputMass * 1.01605;
+                break;
+              case "lb-lt":
+                convertedMass = inputMass / 2240;
+                break;
+              case "lt-lb":
+                convertedMass = inputMass * 2240;
+                break;
+              case "lb-mt":
+                convertedMass = inputMass / 2204.62;
+                break;
+              case "mt-lb":
+                convertedMass = inputMass * 2204.62;
+                break;
+              case "lb-g":
+                convertedMass = inputMass * 453.592;
+                break;
+              case "g-lb":
+                convertedMass = inputMass / 453.592;
+                break;
+              case "g-topT":
+                convertedMass = inputMass * (1 / 907184.74);
+                break;
+              case "topT-g":
+                convertedMass = inputMass / (1 / 907184.74);
+                break;
+              case "oz-kg":
+                convertedMass = inputMass * 0.0283495;
+                break;
+              case "kg-oz":
+                convertedMass = inputMass / 0.0283495;
+                break;
+              case "oz-topT":
+                convertedMass = inputMass * 0.0000283495;
+                break;
+              case "topT-oz":
+                convertedMass = inputMass / 0.0000283495;
+                break;
+              case "mt-g":
+                convertedMass = inputMass * 1000000;
+                break;
+              case "g-mt":
+                convertedMass = inputMass / 1000000;
+                break;
+              case "lt-kg":
+                convertedMass = inputMass * 1016.05;
+                break;
+              case "kg-lt":
+                convertedMass = inputMass / 1016.05;
+                break;
+              case "lt-g":
+                convertedMass = inputMass * 907184.74;
+                break;
+              case "g-lt":
+                convertedMass = inputMass / 907184.74;
+                break;
+              case "topT-g":
+                convertedMass = inputMass * 907184.74;
+                break;
+              case "g-topT":
+                convertedMass = inputMass / 907184.74;
+                break;
+              default:
+                convertedMass = inputMass;
+            }
+            setResult(`${convertedMass.toFixed(2)} ${units[toUnit]}`);
+          } else {
+            setResult("Invalid input");
+          }
+        };
+
+        const handleFromUnitChange = (e) => {
+          setFromUnit(e.target.value);
+        };
+
+        const handleToUnitChange = (e) => {
+          setToUnit(e.target.value);
+        };
+
+        return (
+          <div>
+            <div className="converter2">
+              <h1>Mass Converter</h1>
+              <div className="input-container">
+                <input
+                  type="number"
+                  value={value}
+                  onChange={(e) => setValue(e.target.value)}
+                  placeholder={strings.converterPlaceholder}
+                />
+                <select
+                  className="from-unit"
+                  onChange={handleFromUnitChange}
+                  value={fromUnit}
+                >
+                  {Object.keys(units).map((unit) => (
+                    <option key={unit} value={unit}>
+                      {units[unit]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="conversion-button-container">
+                <div className="button-container">
+                  <button className="convert-button" onClick={convertMass}>
+                    {strings.converterConvertButton}
+                  </button>
+                </div>
+                <div className="result-container">
+                  <input
+                    style={{ width: "100%" }}
+                    type="text"
+                    value={result}
+                    readOnly
+                    placeholder={strings.converterResult}
+                  />
+                </div>
+                <select
+                  className="to-unit"
+                  onChange={handleToUnitChange}
+                  value={toUnit}
+                >
+                  {Object.keys(units).map((unit) => (
+                    <option key={unit} value={unit}>
+                      {units[unit]}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <p className="copyright">
+              {strings.aboutRights}
+              {strings.contact}
+            </p>
+          </div>
+        );
+      }
+
+      function About({ setPage, strings }) {
+        return (
+          <div>
+            <div className="abouts">
+              <h1 className="about">{strings.aboutTitle}</h1>
+              <div className="about-box">
+                <div className="about-box-item">
+                  <div className="about-box-title">{strings.aboutboxt1}</div>
+                  <div className="about-box-content">
+                    <li>{strings.webdev}</li>
+                    <li>{strings.webdev2}</li>
+                    <li>{strings.webdev3}</li>
+                  </div>
+                </div>
+                <div className="about-box-item">
+                  <div className="about-box-title">{strings.aboutboxt2}</div>
+                  <div className="about-box-content">
+                    <li>{strings.matyas}</li>
+                    <li>{strings.matyas2}</li>
+                    <li>{strings.matyas3}</li>
+                  </div>
+                </div>
+                <div className="about-box-item">
+                  <div className="about-box-title">{strings.aboutboxt3}</div>
+                  <div className="about-box-content">
+                    <li>{strings.gaspar}</li>
+                    <li>{strings.gaspar2}</li>
+                    <li>{strings.gaspar3}</li>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p className="copyright">
+              {strings.aboutRights}
+              {strings.contact}
+            </p>
+          </div>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
