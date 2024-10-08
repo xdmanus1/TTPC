@@ -1,0 +1,22 @@
+{
+    "nav.home": "Home",
+    "nav.converter": "Converter",
+    "nav.about": "About",
+    "footer.language": "Select Language:",
+    "footer.english": "English",
+    "footer.hungarian": "Hungarian",
+    "footer.languageChanged": "Language changed to {{language}}",
+    "converter.title": "Speed Converter",
+    "converter.placeholder": "Enter speed",
+    "converter.fromUnit": "From Unit",
+    "converter.toUnit": "To Unit",
+    "converter.convertButton": "Convert",
+    "converter.result": "Result",
+    "about.title": "About Us",
+    "about.content": "Some data about the devs...",
+    "home.title": "Welcome to Speed Converter",
+    "home.content": "Convert speed units easily!",
+    "theme.dark": "Dark Mode",
+    "theme.light": "Light Mode"
+  }
+  
